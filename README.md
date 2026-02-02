@@ -23,6 +23,7 @@ body {
   flex-direction: column;
   align-items: center;
   padding-top: 20px;
+  position: relative;
 }
 
 .center-box img {
@@ -45,6 +46,7 @@ body {
   word-wrap: break-word;
 }
 
+/* Gemensam knappstil */
 .button {
   font-family: 'Noto Sans JP', sans-serif;
   font-weight: 700;
@@ -67,8 +69,6 @@ body {
   background-color: #ff69b4;
   color: white;
   position: absolute;
-  top: 400px; /* justera höjd under texten */
-  left: calc(50% - 120px); /* mer åt vänster */
 }
 
 /* Nej-knapp */
@@ -79,8 +79,6 @@ body {
   background-color: #b0b0b0;
   color: #333;
   position: absolute; /* fri rörelse */
-  top: 400px; /* samma höjd som Ja-knappen */
-  left: calc(50% + 120px); /* mer åt höger */
 }
 </style>
 </head>
@@ -92,22 +90,34 @@ body {
   <div class="text-box">
     ... vill du bli min valentine?
   </div>
-  <div class="button-container">
-    <button class="button button-ja">Ja</button>
-    <button class="button button-nej" id="nejButton">Nej</button>
-  </div>
+  <button class="button button-ja" id="jaButton">Ja</button>
+  <button class="button button-nej" id="nejButton">Nej</button>
 </div>
 
 <script>
+const jaButton = document.getElementById('jaButton');
 const nejButton = document.getElementById('nejButton');
 
-// Startposition är där vi satte den i CSS (mer åt höger)
-let posX = nejButton.offsetLeft;
-let posY = nejButton.offsetTop;
+// Placera knappar horisontellt centrerade under textlådan
+const centerBox = document.querySelector('.center-box');
+const textRect = document.querySelector('.text-box').getBoundingClientRect();
 
+// Höjd under texten
+const buttonsY = textRect.bottom + 40; 
+
+// Ja-knapp lite åt vänster
+let jaX = centerBox.offsetWidth / 2 - 120;
+let jaY = buttonsY;
+jaButton.style.left = jaX + 'px';
+jaButton.style.top = jaY + 'px';
+
+// Nej-knapp lite åt höger
+let posX = centerBox.offsetWidth / 2 + 20;
+let posY = buttonsY;
 nejButton.style.left = posX + 'px';
 nejButton.style.top = posY + 'px';
 
+// Flytta Nej-knappen fritt
 document.addEventListener('mousemove', e => {
   const mouseX = e.clientX;
   const mouseY = e.clientY;
@@ -119,27 +129,25 @@ document.addEventListener('mousemove', e => {
   const distance = Math.hypot(mouseX - buttonCenterX, mouseY - buttonCenterY);
 
   if(distance < 150) { 
-    // Flytta knappen fritt
     const dx = (buttonCenterX - mouseX) / distance * (50 + Math.random() * 100);
     const dy = (buttonCenterY - mouseY) / distance * (30 + Math.random() * 70);
 
     posX += dx;
     posY += dy;
 
-    // Wrap-around: kommer in från motsatt sida
+    // Wrap-around på skärmen
     if(posX + nejButton.offsetWidth < 0) posX = window.innerWidth;
     if(posX > window.innerWidth) posX = -nejButton.offsetWidth;
     if(posY + nejButton.offsetHeight < 0) posY = window.innerHeight;
     if(posY > window.innerHeight) posY = -nejButton.offsetHeight;
 
-    // Skala ner knappen när den flyttar sig
+    // Skala ner knappen när musen är nära
     const scale = Math.max(0.5, 1 - (150 - distance)/300);
     nejButton.style.transform = `scale(${scale})`;
 
     nejButton.style.left = posX + 'px';
     nejButton.style.top = posY + 'px';
   } else {
-    // Återställ normal storlek
     nejButton.style.transform = 'scale(1)';
   }
 });
