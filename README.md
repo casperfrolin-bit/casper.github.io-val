@@ -47,25 +47,17 @@ body {
   word-wrap: break-word; /* bryter texten om den blir för lång */
 }
 
-/* Knappstil */
+/* Gemensam knappstil */
 .button {
   width: 200px;
   height: 70px;
-  background-color: #fc03b6; /* stark rosa */
-  color: white;
   font-family: 'Noto Sans JP', sans-serif;
   font-weight: 700;
   font-size: 20px;
   border: none;
   outline: none;
-  border-radius: 50px; /* rundare hörn */
+  border-radius: 50px;
   cursor: pointer;
-  margin-top: 20px;
-
-  /* Flyttar knappen till mitten men lite åt vänster */
-  align-self: center;
-  transform: translateX(-120px); /* flyttar 30px åt vänster */
-  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -73,8 +65,32 @@ body {
   transition: transform 0.2s;
 }
 
-.button:hover {
-  transform: translateX(-120px) scale(1.05); /* hover-effekt med samma förskjutning */
+/* Ja-knapp */
+.button-ja {
+  background-color: #ff69b4; /* stark rosa */
+  color: white;
+  margin-top: 20px;
+  align-self: center;
+  transform: translateX(-120px); /* några pixlar åt vänster */
+}
+
+.button-ja:hover {
+  transform: translateX(-120px) scale(1.05);
+}
+
+/* Nej-knapp */
+.button-nej {
+  background-color: #f8f8ff; /* Ghost Gray */
+  color: #333;
+  height: 70px; /* samma höjd som Ja-knappen */
+  margin-top: 20px;
+  position: absolute;
+  right: 120px; /* 120px från högerkanten */
+  top: calc(50% + 100px); /* placera lite under Ja-knappen, justera efter behov */
+}
+
+.button-nej:hover {
+  transform: scale(1.05);
 }
 </style>
 </head>
@@ -86,7 +102,8 @@ body {
   <div class="text-box">
     ... vill du bli min valentine?
   </div>
-  <button class="button">Ja</button>
+  <button class="button button-ja">Ja</button>
+  <button class="button button-nej">Nej</button>
 </div>
 
 </body>
