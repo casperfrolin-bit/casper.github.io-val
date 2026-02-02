@@ -33,14 +33,14 @@ body {
 
 .text-box {
   width: 200px;
-  background-color: #ffe0e6; /* ljusare rosa */
+  background-color: #FFFFFF; /* ljusare rosa */
   border-radius: 20px;
   padding: 10px;
 
   /* Bold Oswald-font */
   font-family: 'Oswald', sans-serif;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 40px;
   color: #333;
 
   text-align: center;
