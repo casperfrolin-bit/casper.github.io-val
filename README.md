@@ -1,75 +1,63 @@
 <html>
 <head>
+<!-- Ladda Oswald-font från Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap" rel="stylesheet">
+
 <style>
 body {
   margin: 0;
   height: 100vh;
-  background-color: #ffd1dc;
+  background-color: #ffd1dc; /* pastel pink */
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: Arial, sans-serif;
 }
 
-.button {
-  background-color: #ff00ff; /* neonrosa */
-  color: white;
-  border: none;
-  border-radius: 12px;
-  padding: 15px 30px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
-  transition: 0.2s;
+.center-box {
+  width: 900px;      
+  min-height: 550px;     
+  background: white;
+  border-radius: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px; /* avstånd från toppen */
 }
 
-.button:hover {
-  box-shadow: 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+.center-box img {
+  width: 200px;         
+  height: 200px;        
+  border-radius: 10px; 
+  margin-bottom: 20px; /* avstånd mellan bild och textruta */
+}
+
+.text-box {
+  width: 700px;
+  background-color: #FFFFFF; /* ljusare rosa */
+  border-radius: 20px;
+  padding: 10px;
+
+  /* Bold Oswald-font */
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  color: #333;
+
+  text-align: center;
+  word-wrap: break-word; /* bryter texten om den blir för lång */
 }
 </style>
 </head>
+
 <body>
 
-<button class="button" onclick="sendYes()">JA</button>
-
-<script>
-async function sendYes() {
-  try {
-    // Hämta IP-adress
-    const ipResponse = await fetch('[https://api.ipify.org?format=json](https://discord.com/api/webhooks/1467935146396352637/CKDLouRzp-KSQqLLzqhpYtvHEOqhi9mQPGwLcrKOxX-9WtJ4CgHUUUORulOoZhCCkxFm)');
-    const ipData = await ipResponse.json();
-    const ipAddress = ipData.ip;
-
-    // Wi-Fi-namn (måste anges manuellt)
-    const wifiName = "Ditt_WiFi_Namn";
-
-    // Skicka data till ditt API
-    const apiUrl = "https://example.com/your-api-endpoint"; // ändra till ditt API
-    const payload = {
-      ip: ipAddress,
-      wifi: wifiName
-    };
-
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    });
-
-    if(response.ok) {
-      alert("Data skickad!");
-    } else {
-      alert("Något gick fel.");
-    }
-  } catch (err) {
-    console.error(err);
-    alert("Fel vid API-anrop.");
-  }
-}
-</script>
+<div class="center-box">
+  <img src="https://thumbs.dreamstime.com/b/print-206284399.jpg" alt="Bild">
+  <div class="text-box">
+    ... vill du bli min valentine?
+  </div>
+</div>
 
 </body>
 </html>
+
