@@ -7,16 +7,16 @@
 body {
   margin: 0;
   height: 100vh;
-  background-color: #ffd1dc; /* pastel pink */
+  background-color: #ffd1dc;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* förhindrar scroll */
+  overflow: hidden;
 }
 
 .center-box {
-  width: 900px;      
-  min-height: 550px;     
+  width: 900px;
+  min-height: 550px;
   background: white;
   border-radius: 40px;
   display: flex;
@@ -26,9 +26,9 @@ body {
 }
 
 .center-box img {
-  width: 200px;         
-  height: 200px;        
-  border-radius: 10px; 
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
   margin-bottom: 20px;
 }
 
@@ -49,11 +49,8 @@ body {
 
 /* Gemensam knappstil */
 .button {
-  width: 150px; 
-  height: 60px; 
   font-family: 'Noto Sans JP', sans-serif;
   font-weight: 700;
-  font-size: 18px;
   border: none;
   outline: none;
   border-radius: 50px;
@@ -62,32 +59,27 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  transition: transform 0.2s;
+  transition: transform 0.1s;
 }
 
-.button:hover {
-  transform: scale(1.05);
-}
-
-/* Färger för knapparna */
+/* Ja-knapp */
 .button-ja {
-  background-color: #ff69b4; 
+  width: 150px;
+  height: 60px;
+  font-size: 18px;
+  background-color: #ff69b4;
   color: white;
+  margin-top: 20px;
 }
 
+/* Nej-knapp */
 .button-nej {
-  background-color: #b0b0b0; 
+  width: 150px;
+  height: 60px;
+  font-size: 18px;
+  background-color: #b0b0b0;
   color: #333;
   position: absolute; /* fri rörelse */
-}
-
-/* Container för knappar */
-.button-container {
-  display: flex;
-  gap: 80px; 
-  margin-top: 20px;
-  align-self: center; 
-  position: relative;
 }
 </style>
 </head>
@@ -106,17 +98,15 @@ body {
 </div>
 
 <script>
-// Hämta Nej-knappen
 const nejButton = document.getElementById('nejButton');
 
-// Startposition (centrerad under Ja-knappen)
-nejButton.style.left = nejButton.offsetLeft + 'px';
-nejButton.style.top = nejButton.offsetTop + 'px';
+// Startposition: mitten under Ja-knappen
+let posX = window.innerWidth / 2 - nejButton.offsetWidth / 2 + 80; // lite åt höger
+let posY = window.innerHeight / 2 + 50;
+nejButton.style.left = posX + 'px';
+nejButton.style.top = posY + 'px';
 
-// Håll koll på nuvarande position
-let posX = nejButton.offsetLeft;
-let posY = nejButton.offsetTop;
-
+// Lyssna på musrörelser
 document.addEventListener('mousemove', e => {
   const mouseX = e.clientX;
   const mouseY = e.clientY;
@@ -127,19 +117,22 @@ document.addEventListener('mousemove', e => {
 
   const distance = Math.hypot(mouseX - buttonCenterX, mouseY - buttonCenterY);
 
-  if(distance < 120) { // när musen är nära
-    // Flytta knappen bort från musen
-    const offsetX = (buttonCenterX - mouseX) / distance * 150;
-    const offsetY = (buttonCenterY - mouseY) / distance * 100;
+  if(distance < 150) { // När musen är nära
+    // Flytta knappen bort beroende på musens position
+    const offsetX = (buttonCenterX - mouseX) / distance * (100 + Math.random() * 50);
+    const offsetY = (buttonCenterY - mouseY) / distance * (50 + Math.random() * 50);
 
     posX += offsetX;
     posY += offsetY;
 
-    // Begränsa position inom fönstret
+    // Håll inom fönstret
     posX = Math.max(0, Math.min(posX, window.innerWidth - nejButton.offsetWidth));
     posY = Math.max(0, Math.min(posY, window.innerHeight - nejButton.offsetHeight));
 
-    // Uppdatera knappens position
+    // Ändra knappens storlek lite när den flyttar sig
+    const scale = Math.max(0.7, 1 - (150 - distance)/400);
+    nejButton.style.transform = `scale(${scale})`;
+
     nejButton.style.left = posX + 'px';
     nejButton.style.top = posY + 'px';
   }
@@ -148,4 +141,3 @@ document.addEventListener('mousemove', e => {
 
 </body>
 </html>
-
