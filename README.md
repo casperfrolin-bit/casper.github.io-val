@@ -1,7 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-<style>
 body {
   margin: 0;
   height: 100vh;
@@ -13,8 +9,8 @@ body {
 }
 
 .center-box {
-  width: 500px;
-  height: 300px;
+  width: 700px;
+  height: 500px;
   background: white;
 }
 </style>
