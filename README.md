@@ -61,7 +61,7 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  transition: transform 0.2s;
+  transition: transform 0.3s ease-out;
 }
 
 .button:hover {
@@ -70,21 +70,22 @@ body {
 
 /* Färger för knapparna */
 .button-ja {
-  background-color: #ff69b4; /* stark rosa */
+  background-color: #ff69b4;
   color: white;
 }
 
 .button-nej {
-  background-color: #dcdcdc; /* mörkare grå för bättre synlighet */
+  background-color: #dcdcdc;
   color: #333;
+  position: relative; /* VIKTIGT för rörelsen */
 }
 
-/* Container för knappar bredvid varandra */
+/* Container för knappar */
 .button-container {
   display: flex;
-  gap: 40px; /* ökat avstånd mellan knapparna */
+  gap: 40px;
   margin-top: 20px;
-  align-self: center; /* centrerar container under texten */
+  align-self: center;
 }
 </style>
 </head>
@@ -101,6 +102,36 @@ body {
     <button class="button button-nej">Nej</button>
   </div>
 </div>
+
+<script>
+const nejButton = document.querySelector('.button-nej');
+
+let offsetX = 0;
+let offsetY = 0;
+const maxDistance = 120;
+
+document.addEventListener('mousemove', (e) => {
+  const rect = nejButton.getBoundingClientRect();
+
+  const buttonCenterX = rect.left + rect.width / 2;
+  const buttonCenterY = rect.top + rect.height / 2;
+
+  const dx = e.clientX - buttonCenterX;
+  const dy = e.clientY - buttonCenterY;
+
+  const distance = Math.sqrt(dx * dx + dy * dy);
+
+  if (distance < maxDistance) {
+    const force = (maxDistance - distance) / maxDistance;
+
+    offsetX -= dx * force * 0.05;
+    offsetY -= dy * force * 0.05;
+
+    nejButton.style.transform =
+      `translate(${offsetX}px, ${offsetY}px)`;
+  }
+});
+</script>
 
 </body>
 </html>
