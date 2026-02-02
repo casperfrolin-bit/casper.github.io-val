@@ -13,7 +13,7 @@ body {
 
 .center-box {
   width: 900px;      /* bredd */
-  height: 700px;     /* höjd */
+  height: 550px;     /* höjd */
   background: white;
 
   border-radius: 40px; /* gör hörnen väldigt runda */
