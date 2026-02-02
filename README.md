@@ -32,7 +32,7 @@ body {
 }
 
 .text-box {
-  width: 200px;
+  width: 700px;
   background-color: #FFFFFF; /* ljusare rosa */
   border-radius: 20px;
   padding: 10px;
@@ -54,7 +54,7 @@ body {
 <div class="center-box">
   <img src="https://thumbs.dreamstime.com/b/print-206284399.jpg" alt="Bild">
   <div class="text-box">
-    Här är texten du kan ändra i koden
+    ... vill du bli min valentine?
   </div>
 </div>
 
