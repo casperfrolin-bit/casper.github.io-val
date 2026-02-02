@@ -12,11 +12,11 @@ body {
 }
 
 .center-box {
-  width: 1300px;      /* bredd */
-  height: 700px;     /* höjd */
+  width: 90%;        /* gör den responsiv */
+  max-width: 1300px; /* din stora storlek */
+  height: 700px;
   background: white;
-
-  border-radius: 40px; /* gör hörnen väldigt runda */
+  border-radius: 40px;
 }
 </style>
 </head>
