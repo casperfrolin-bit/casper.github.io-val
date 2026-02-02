@@ -1,5 +1,8 @@
 <html>
 <head>
+<!-- Ladda Oswald-font från Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap" rel="stylesheet">
+
 <style>
 body {
   margin: 0;
@@ -30,17 +33,18 @@ body {
 
 .text-box {
   width: 200px;
-  background-color: #FFFFFF; /* vit */
+  background-color: #ffe0e6; /* ljusare rosa */
   border-radius: 20px;
-  display: flex;
-  justify-content: center; /* horisontell centrering */
-  align-items: center;     /* vertikal centrering av texten */
-  text-align: center;
   padding: 10px;
-  font-family: Arial, sans-serif;
+
+  /* Bold Oswald-font */
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
   font-size: 16px;
   color: #333;
-  word-wrap: break-word;   /* bryter texten om den är för lång */
+
+  text-align: center;
+  word-wrap: break-word; /* bryter texten om den blir för lång */
 }
 </style>
 </head>
@@ -50,7 +54,7 @@ body {
 <div class="center-box">
   <img src="https://thumbs.dreamstime.com/b/print-206284399.jpg" alt="Bild">
   <div class="text-box">
-    Här är texten du kan ändra i koden. Om den blir längre växer rutan automatiskt!
+    Här är texten du kan ändra i koden
   </div>
 </div>
 
