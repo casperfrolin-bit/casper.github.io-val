@@ -1,8 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
 <style>
-  body {
-    background-color: #ffd1dc; /* pastel pink */
-  }
+body {
+  margin: 0;
+  height: 100vh;
+  background-color: #ffd1dc; /* pastel pink */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center-box {
+  width: 500px;
+  height: 300px;
+  background: white;
+}
 </style>
-<div class="center-box">
-  <!-- Du kan skriva innehåll här senare -->
-</div>
+</head>
+
+<body>
+
+<div class="center-box"></div>
+
+</body>
+</html>
