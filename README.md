@@ -12,7 +12,7 @@ body {
 
 .center-box {
   width: 900px;      
-  height: 550px;     
+  min-height: 550px;     
   background: white;
   border-radius: 40px;
   display: flex;
@@ -22,20 +22,19 @@ body {
 }
 
 .center-box img {
-  width: 50px;         
-  height: 50px;        
+  width: 200px;         
+  height: 200px;        
   border-radius: 10px; 
   margin-bottom: 20px; /* avstånd mellan bild och textruta */
 }
 
 .text-box {
   width: 200px;
-  height: 200px;
-  background-color: #ffe0e6; /* ljusare rosa */
+  background-color: #FFFFFF; /* vit */
   border-radius: 20px;
   display: flex;
   justify-content: center; /* horisontell centrering */
-  align-items: center;     /* vertikal centrering */
+  align-items: center;     /* vertikal centrering av texten */
   text-align: center;
   padding: 10px;
   font-family: Arial, sans-serif;
@@ -51,7 +50,7 @@ body {
 <div class="center-box">
   <img src="https://thumbs.dreamstime.com/b/print-206284399.jpg" alt="Bild">
   <div class="text-box">
-    Här är texten du kan ändra i koden
+    Här är texten du kan ändra i koden. Om den blir längre växer rutan automatiskt!
   </div>
 </div>
 
