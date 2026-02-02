@@ -21,51 +21,42 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 20px; /* avstånd från toppen */
+  padding-top: 20px;
 }
 
 .center-box img {
   width: 200px;         
   height: 200px;        
   border-radius: 10px; 
-  margin-bottom: 20px; /* avstånd mellan bild och textruta */
+  margin-bottom: 20px;
 }
 
 .text-box {
   width: 700px;
-  background-color: #FFFFFF; /* ljusare rosa */
+  background-color: #FFFFFF;
   border-radius: 20px;
   padding: 10px;
 
-  /* Bold Noto Sans Japanese */
   font-family: 'Noto Sans JP', sans-serif;
   font-weight: 700;
   font-size: 40px;
   color: #333;
 
   text-align: center;
-  word-wrap: break-word; /* bryter texten om den blir för lång */
+  word-wrap: break-word;
 }
 
-/* Knappstil */
+/* Gemensam knappstil */
 .button {
   width: 200px;
   height: 70px;
-  background-color: #ff69b4; /* stark rosa */
-  color: white;
   font-family: 'Noto Sans JP', sans-serif;
   font-weight: 700;
   font-size: 20px;
   border: none;
   outline: none;
-  border-radius: 50px; /* rundare hörn */
+  border-radius: 50px;
   cursor: pointer;
-  margin-top: 20px;
-
-  /* Flyttar knappen till mitten men lite åt vänster */
-  align-self: center;
-  transform: translateX(-30px); /* flyttar 30px åt vänster */
-  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -74,7 +65,26 @@ body {
 }
 
 .button:hover {
-  transform: translateX(-30px) scale(1.05); /* hover-effekt med samma förskjutning */
+  transform: scale(1.05);
+}
+
+/* Färger för knapparna */
+.button-ja {
+  background-color: #ff69b4; /* stark rosa */
+  color: white;
+}
+
+.button-nej {
+  background-color: #dcdcdc; /* mörkare grå för bättre synlighet */
+  color: #333;
+}
+
+/* Container för knappar bredvid varandra */
+.button-container {
+  display: flex;
+  gap: 40px; /* ökat avstånd mellan knapparna */
+  margin-top: 20px;
+  align-self: center; /* centrerar container under texten */
 }
 </style>
 </head>
@@ -86,7 +96,10 @@ body {
   <div class="text-box">
     ... vill du bli min valentine?
   </div>
-  <button class="button">Ja</button>
+  <div class="button-container">
+    <button class="button button-ja">Ja</button>
+    <button class="button button-nej">Nej</button>
+  </div>
 </div>
 
 </body>
