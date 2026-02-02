@@ -47,29 +47,30 @@ body {
   word-wrap: break-word; /* bryter texten om den blir för lång */
 }
 
-/* Ny knappstil */
+/* Knappstil */
 .button {
-  width: 200px;      /* mindre bredd */
-  height: 70px;      /* mindre höjd */
+  width: 200px;
+  height: 70px;
   background-color: #ff69b4; /* stark rosa */
   color: white;
   font-family: 'Noto Sans JP', sans-serif;
   font-weight: 700;
   font-size: 20px;
   border: none;
+  outline: none; /* tar bort outline */
   border-radius: 50px; /* rundare hörn */
   cursor: pointer;
   margin-top: 20px;
-  align-self: flex-end; /* placerar knappen mer åt höger */
+  align-self: flex-start; /* placerad mot vänster */
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  transition: transform 0.2s; /* enkel hover-effekt */
+  transition: transform 0.2s;
 }
 
 .button:hover {
-  transform: scale(1.05); /* liten förstoring vid hover */
+  transform: scale(1.05); /* liten hover-effekt */
 }
 </style>
 </head>
@@ -81,7 +82,7 @@ body {
   <div class="text-box">
     ... vill du bli min valentine?
   </div>
-  <button class="button">Klicka här</button>
+  <button class="button">Ja</button>
 </div>
 
 </body>
