@@ -4,7 +4,7 @@
 body {
   margin: 0;
   height: 100vh;
-  background-color: #ffd1dc; /* pastel pink */
+  background-color: #0000FF; /* pastel pink */
 
   display: flex;
   justify-content: center;
