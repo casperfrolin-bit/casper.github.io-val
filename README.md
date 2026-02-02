@@ -65,32 +65,27 @@ body {
   transition: transform 0.2s;
 }
 
-/* Ja-knapp */
+.button:hover {
+  transform: scale(1.05);
+}
+
+/* Behåll färger för knapparna */
 .button-ja {
   background-color: #ff69b4; /* stark rosa */
   color: white;
-  margin-top: 20px;
-  align-self: center;
-  transform: translateX(-120px); /* några pixlar åt vänster */
 }
 
-.button-ja:hover {
-  transform: translateX(-120px) scale(1.05);
-}
-
-/* Nej-knapp */
 .button-nej {
   background-color: #f8f8ff; /* Ghost Gray */
   color: #333;
-  height: 70px; /* samma höjd som Ja-knappen */
-  margin-top: 20px;
-  position: absolute;
-  right: 120px; /* 120px från högerkanten */
-  top: calc(50% + 100px); /* placera lite under Ja-knappen, justera efter behov */
 }
 
-.button-nej:hover {
-  transform: scale(1.05);
+/* Container för knappar bredvid varandra */
+.button-container {
+  display: flex;
+  gap: 20px; /* avstånd mellan knapparna */
+  margin-top: 20px;
+  align-self: center; /* centrerar container under texten */
 }
 </style>
 </head>
@@ -102,8 +97,10 @@ body {
   <div class="text-box">
     ... vill du bli min valentine?
   </div>
-  <button class="button button-ja">Ja</button>
-  <button class="button button-nej">Nej</button>
+  <div class="button-container">
+    <button class="button button-ja">Ja</button>
+    <button class="button button-nej">Nej</button>
+  </div>
 </div>
 
 </body>
