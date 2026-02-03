@@ -1,3 +1,4 @@
+
 <html>
 <head>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap" rel="stylesheet">
@@ -13,7 +14,7 @@ body {
   align-items: center;
 }
 
-/* === FALLANDE HJÄRTAN BAKOM BOX === */
+/* === FALLANDE HJÄRTAN === */
 .hearts {
   position: fixed;
   top: 0;
@@ -21,22 +22,15 @@ body {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 0; /* Ligger bakom center-box */
+  z-index: -1; /* 👈 bakom boxen */
 }
 
 .heart {
   position: absolute;
+  color: #ff8fb1; /* 👈 rosa hjärtan */
   font-size: 20px;
   animation: fall linear infinite;
-  opacity: 0.8;
-}
-
-.heart.red {
-  color: #ff4d6d;
-}
-
-.heart.pink {
-  color: #ffb6c1;
+  opacity: 0.7;
 }
 
 @keyframes fall {
@@ -77,7 +71,7 @@ body {
   flex-direction: column;
   align-items: center;
   padding-top: 20px;
-  z-index: 1; /* Ligger framför hjärtan */
+  z-index: 1; /* 👈 över hjärtana */
 }
 
 .center-box img {
@@ -149,21 +143,16 @@ body {
 <script>
 /* === FALLANDE HJÄRTAN SCRIPT === */
 const heartsContainer = document.getElementById('hearts');
-const heartCount = 40; // lite fler hjärtan
+const heartCount = 30;
 
 for (let i = 0; i < heartCount; i++) {
   const heart = document.createElement('div');
   heart.classList.add('heart');
-
-  // slumpa mellan röd och rosa
-  heart.classList.add(Math.random() < 0.5 ? 'red' : 'pink');
-
   heart.innerHTML = '❤';
 
   heart.style.left = Math.random() * 100 + 'vw';
   heart.style.fontSize = Math.random() * 20 + 10 + 'px';
-  // långsammare hjärtan: 8-15s
-  heart.style.animationDuration = Math.random() * 7 + 8 + 's';
+  heart.style.animationDuration = Math.random() * 6 + 10 + 's'; // 👈 långsammare
   heart.style.animationDelay = Math.random() * 5 + 's';
 
   heartsContainer.appendChild(heart);
