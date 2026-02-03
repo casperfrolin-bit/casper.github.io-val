@@ -37,19 +37,6 @@ body {
   100% { transform: translateY(110vh); }
 }
 
-/* === HJÄRTEXPLOSION === */
-.explosion-heart {
-  position: fixed;
-  color: #ff4d6d;
-  pointer-events: none;
-  animation: explode 1s ease-out forwards;
-}
-
-@keyframes explode {
-  0% { transform: translate(0, 0) scale(1); opacity: 1; }
-  100% { transform: translate(var(--x), var(--y)) scale(0.5); opacity: 0; }
-}
-
 /* === CENTER BOX === */
 .center-box {
   width: 900px;
@@ -102,7 +89,7 @@ body {
 .button-nej {
   background-color: #dcdcdc;
   color: #333;
-  position: fixed; /* 👈 ändrad för helskärm */
+  position: fixed;
 }
 
 .button-container {
@@ -127,7 +114,7 @@ body {
 </div>
 
 <script>
-/* === FALLANDE HJÄRTAN SCRIPT === */
+/* === FALLANDE HJÄRTAN === */
 const heartsContainer = document.getElementById('hearts');
 const heartCount = 45;
 
@@ -137,27 +124,21 @@ for (let i = 0; i < heartCount; i++) {
   heart.innerHTML = '❤';
 
   heart.style.left = Math.random() * 100 + 'vw';
-
-  if (Math.random() < 0.6) {
-    heart.style.top = 45 + (Math.random() * 20 - 10) + 'vh';
-  } else {
-    heart.style.top = Math.random() * 30 + 'vh';
-  }
-
+  heart.style.top = Math.random() * 40 + 'vh';
   heart.style.fontSize = Math.random() * 18 + 12 + 'px';
 
   const duration = Math.random() * 6 + 12;
   heart.style.animationDuration = duration + 's';
-  heart.style.animationDelay = (-Math.random() * duration * 0.8) + 's';
+  heart.style.animationDelay = (-Math.random() * duration) + 's';
 
   heartsContainer.appendChild(heart);
 }
 
-/* === NEJ-KNAPPEN SOM FLYR (HELA SKÄRMEN + HÖRNPADDING) === */
+/* === NEJ-KNAPPEN SOM FLYR I CIRKEL === */
 const nejButton = document.querySelector('.button-nej');
 const dangerRadius = 150;
 
-// Startposition (mitt på skärmen ungefär)
+// Startposition
 let posX = window.innerWidth / 2 + 100;
 let posY = window.innerHeight / 2 + 100;
 
@@ -166,25 +147,38 @@ nejButton.style.top = posY + 'px';
 
 document.addEventListener('mousemove', (e) => {
   const rect = nejButton.getBoundingClientRect();
-  const cx = rect.left + rect.width / 2;
-  const cy = rect.top + rect.height / 2;
 
-  const dx = e.clientX - cx;
-  const dy = e.clientY - cy;
+  const btnCenterX = rect.left + rect.width / 2;
+  const btnCenterY = rect.top + rect.height / 2;
+
+  const dx = e.clientX - btnCenterX;
+  const dy = e.clientY - btnCenterY;
   const distance = Math.sqrt(dx * dx + dy * dy);
 
+  // Fly undan musen
   if (distance < dangerRadius) {
     posX -= (dx / distance) * 14;
     posY -= (dy / distance) * 14;
   }
 
-  // === HELA SKÄRMEN MED HÖRNPADDING ===
-  const cornerPadding = 20; // 👈 så den inte fastnar i hörnen
-  const maxX = window.innerWidth - rect.width - cornerPadding;
-  const maxY = window.innerHeight - rect.height - cornerPadding;
+  /* === CIRKULÄR BEGRÄNSNING === */
+  const screenCenterX = window.innerWidth / 2;
+  const screenCenterY = window.innerHeight / 2;
 
-  posX = Math.max(cornerPadding, Math.min(posX, maxX));
-  posY = Math.max(cornerPadding, Math.min(posY, maxY));
+  const radius =
+    Math.min(window.innerWidth, window.innerHeight) / 2
+    - Math.max(rect.width, rect.height)
+    - 20;
+
+  const vx = posX + rect.width / 2 - screenCenterX;
+  const vy = posY + rect.height / 2 - screenCenterY;
+  const distFromCenter = Math.sqrt(vx * vx + vy * vy);
+
+  if (distFromCenter > radius) {
+    const scale = radius / distFromCenter;
+    posX = screenCenterX + vx * scale - rect.width / 2;
+    posY = screenCenterY + vy * scale - rect.height / 2;
+  }
 
   nejButton.style.left = posX + 'px';
   nejButton.style.top = posY + 'px';
@@ -193,4 +187,3 @@ document.addEventListener('mousemove', (e) => {
 
 </body>
 </html>
-
