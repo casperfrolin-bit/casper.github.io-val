@@ -41,8 +41,8 @@ body {
 }
 
 .button {
-  width: 200px;
-  height: 70px;
+  width: 100px;
+  height: 30px;
   font-family: 'Noto Sans JP', sans-serif;
   font-weight: 700;
   font-size: 20px;
@@ -67,7 +67,7 @@ body {
 
 .button-container {
   display: flex;
-  gap: 40px;
+  gap: 180px;
   margin-top: 20px;
 }
 </style>
