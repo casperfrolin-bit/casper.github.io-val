@@ -1,4 +1,5 @@
-****<html>
+<!DOCTYPE html>
+<html>
 <head>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap" rel="stylesheet">
 
@@ -53,6 +54,12 @@ body {
   text-align: center;
 }
 
+.button-container {
+  display: flex;
+  gap: 180px;
+  margin-top: 20px;
+}
+
 .button {
   width: 100px;
   height: 60px;
@@ -69,13 +76,7 @@ body {
 
 .button-nej {
   background: #dcdcdc;
-  pointer-events: none; /* 👈 OMÖJLIG ATT KLICKA */
-}
-
-.button-container {
-  display: flex;
-  gap: 180px;
-  margin-top: 20px;
+  pointer-events: none; /* omöjlig att klicka */
 }
 </style>
 </head>
@@ -87,6 +88,7 @@ body {
 <div class="center-box">
   <img src="https://thumbs.dreamstime.com/b/print-206284399.jpg" width="200">
   <div class="text-box">... vill du bli min valentine?</div>
+
   <div class="button-container">
     <button class="button button-ja">Ja</button>
     <button class="button button-nej">Nej</button>
@@ -105,31 +107,36 @@ function spawnHeart() {
   h.style.fontSize = 12 + Math.random() * 24 + "px";
   h.style.animationDuration = 6 + Math.random() * 8 + "s";
   hearts.appendChild(h);
-
   setTimeout(() => h.remove(), 15000);
 }
 
-// Spawnar många direkt
 for (let i = 0; i < 80; i++) spawnHeart();
-
-// Spawnar kontinuerligt nya
 setInterval(() => {
   for (let i = 0; i < 5; i++) spawnHeart();
 }, 500);
 
-/* === SUPERSNABB NEJ-KNAPP === */
+/* === NEJ-KNAPP === */
 const btn = document.querySelector(".button-nej");
 
-let x = btn.getBoundingClientRect().left;
-let y = btn.getBoundingClientRect().top;
-
+let x = 0;
+let y = 0;
+let initialized = false;
 let lastMouseX = 0;
 let lastMouseY = 0;
 
 document.addEventListener("mousemove", (e) => {
   const r = btn.getBoundingClientRect();
-  const cx = r.left + r.width / 2;
-  const cy = r.top + r.height / 2;
+
+  /* Initiera exakt där knappen redan är */
+  if (!initialized) {
+    x = r.left;
+    y = r.top;
+    btn.style.position = "fixed";
+    initialized = true;
+  }
+
+  const cx = x + r.width / 2;
+  const cy = y + r.height / 2;
 
   const dx = e.clientX - cx;
   const dy = e.clientY - cy;
@@ -141,22 +148,28 @@ document.addEventListener("mousemove", (e) => {
   ) || 1;
 
   if (d < 200) {
-    x -= (dx / d) * mouseSpeed * 1.2;
-    y -= (dy / d) * mouseSpeed * 1.2;
+    x -= (dx / d) * mouseSpeed * 1.3;
+    y -= (dy / d) * mouseSpeed * 1.3;
   }
 
   lastMouseX = e.clientX;
   lastMouseY = e.clientY;
 
-  const minX = 0;
-  const minY = 0;
-  const maxX = window.innerWidth - r.width;
-  const maxY = window.innerHeight - r.height;
+  /* === CIRKULÄR GRÄNS (inga hörn) === */
+  const centerX = window.innerWidth / 2;
+  const centerY = window.innerHeight / 2;
+  const radius = Math.min(window.innerWidth, window.innerHeight) / 2 - 60;
 
-  x = Math.max(minX, Math.min(x, maxX));
-  y = Math.max(minY, Math.min(y, maxY));
+  const vx = x - centerX;
+  const vy = y - centerY;
+  const dist = Math.hypot(vx, vy);
 
-  btn.style.position = "fixed";
+  if (dist > radius) {
+    const scale = radius / dist;
+    x = centerX + vx * scale;
+    y = centerY + vy * scale;
+  }
+
   btn.style.left = x + "px";
   btn.style.top = y + "px";
 });
@@ -164,4 +177,3 @@ document.addEventListener("mousemove", (e) => {
 
 </body>
 </html>
-****
