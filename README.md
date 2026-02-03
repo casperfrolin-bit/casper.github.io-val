@@ -68,7 +68,7 @@ body {
 .button-container {
   display: flex;
   gap: 180px;
-  margin-top: 35px;  /* ← flyttar ner knapparna 15 px */
+  margin-top: 20px;
 }
 </style>
 </head>
@@ -112,6 +112,7 @@ document.addEventListener('mousemove', (e) => {
     y -= ny * 14;
   }
 
+  // === WRAP AROUND SKÄRMEN ===
   const screenW = window.innerWidth;
   const screenH = window.innerHeight;
 
@@ -126,3 +127,4 @@ document.addEventListener('mousemove', (e) => {
 
 </body>
 </html>
+
