@@ -88,10 +88,14 @@ body {
 
 <script>
 const nejButton = document.querySelector('.button-nej');
+const jaButton = document.querySelector('.button-ja');
 
 let x = 0;
 let y = 0;
 const dangerRadius = 150;
+
+// 🔹 Minnesflagga – så Ja bara växer EN gång
+let hasMoved = false;
 
 document.addEventListener('mousemove', (e) => {
   const rect = nejButton.getBoundingClientRect();
@@ -110,6 +114,13 @@ document.addEventListener('mousemove', (e) => {
 
     x -= nx * 14;
     y -= ny * 14;
+
+    // 🔹 Gör Ja större – men bara första gången
+    if (!hasMoved) {
+      jaButton.style.transform = "scale(1.6)";
+      jaButton.style.transition = "transform 0.2s ease";
+      hasMoved = true;
+    }
   }
 
   // === WRAP AROUND SKÄRMEN ===
@@ -127,4 +138,3 @@ document.addEventListener('mousemove', (e) => {
 
 </body>
 </html>
-
