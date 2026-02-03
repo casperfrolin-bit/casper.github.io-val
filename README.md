@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap" rel="stylesheet">
@@ -10,7 +11,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* VIKTIGT */
 }
 
 .center-box {
@@ -63,7 +63,7 @@ body {
 .button-nej {
   background-color: #dcdcdc;
   color: #333;
-  position: relative;
+  position: fixed;
 }
 
 .button-container {
@@ -89,10 +89,16 @@ body {
 
 <script>
 const nejButton = document.querySelector('.button-nej');
+const jaButton = document.querySelector('.button-ja');
+
+// Startposition
+nejButton.style.left = "55%";
+nejButton.style.top = "65%";
 
 let x = 0;
 let y = 0;
 const dangerRadius = 150;
+let hasMoved = false;
 
 document.addEventListener('mousemove', (e) => {
   const rect = nejButton.getBoundingClientRect();
@@ -103,7 +109,6 @@ document.addEventListener('mousemove', (e) => {
 
   const dx = e.clientX - cx;
   const dy = e.clientY - cy;
-
   const distance = Math.sqrt(dx * dx + dy * dy);
 
   if (distance < dangerRadius) {
@@ -112,15 +117,19 @@ document.addEventListener('mousemove', (e) => {
 
     x -= nx * 14;
     y -= ny * 14;
+
+    if (!hasMoved) {
+      jaButton.style.transform = "scale(1.6)";
+      jaButton.style.transition = "transform 0.2s ease";
+      hasMoved = true;
+    }
   }
 
-  // === LÅS INOM ROSA BAKGRUNDEN (BODY) ===
-  const padding = 10;
-
-  const minX = bodyRect.left - rect.left + padding;
-  const maxX = bodyRect.right - rect.right - padding;
-  const minY = bodyRect.top - rect.top + padding;
-  const maxY = bodyRect.bottom - rect.bottom - padding;
+  // 🔒 Begränsa till rosa bakgrunden
+  const minX = bodyRect.left - rect.left;
+  const maxX = bodyRect.right - rect.right;
+  const minY = bodyRect.top - rect.top;
+  const maxY = bodyRect.bottom - rect.bottom;
 
   x = Math.max(minX, Math.min(x, maxX));
   y = Math.max(minY, Math.min(y, maxY));
