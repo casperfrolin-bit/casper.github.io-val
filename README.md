@@ -10,6 +10,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden; /* VIKTIGT */
 }
 
 .center-box {
@@ -95,6 +96,7 @@ const dangerRadius = 150;
 
 document.addEventListener('mousemove', (e) => {
   const rect = nejButton.getBoundingClientRect();
+  const bodyRect = document.body.getBoundingClientRect();
 
   const cx = rect.left + rect.width / 2;
   const cy = rect.top + rect.height / 2;
@@ -112,13 +114,16 @@ document.addEventListener('mousemove', (e) => {
     y -= ny * 14;
   }
 
-  // === HÅLL KNAPPEN INOM SKÄRMEN ===
+  // === LÅS INOM ROSA BAKGRUNDEN (BODY) ===
   const padding = 10;
-  const maxX = window.innerWidth - rect.width - padding;
-  const maxY = window.innerHeight - rect.height - padding;
 
-  x = Math.max(-rect.left + padding, Math.min(x, maxX - rect.left));
-  y = Math.max(-rect.top + padding, Math.min(y, maxY - rect.top));
+  const minX = bodyRect.left - rect.left + padding;
+  const maxX = bodyRect.right - rect.right - padding;
+  const minY = bodyRect.top - rect.top + padding;
+  const maxY = bodyRect.bottom - rect.bottom - padding;
+
+  x = Math.max(minX, Math.min(x, maxX));
+  y = Math.max(minY, Math.min(y, maxY));
 
   nejButton.style.transform = `translate(${x}px, ${y}px)`;
 });
