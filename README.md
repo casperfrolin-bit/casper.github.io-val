@@ -41,8 +41,8 @@ body {
 }
 
 .button {
-  width: 90px;
-  height: 70px;
+  width: 10px;
+  height: 60px;
   font-family: 'Noto Sans JP', sans-serif;
   font-weight: 700;
   font-size: 15px;
