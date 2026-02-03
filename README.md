@@ -1,4 +1,3 @@
-
 <html>
 <head>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap" rel="stylesheet">
@@ -56,37 +55,42 @@ body {
 
 .text-box {
   width: 700px;
+  padding: 10px;
   font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 700;
   font-size: 40px;
+  color: #333;
   text-align: center;
 }
 
 /* === KNAPPAR === */
 .button-container {
   display: flex;
-  gap: 260px;
+  gap: 260px;          /* 👈 mer mellanrum */
   margin-top: 30px;
-  transform: translateX(-80px);
+  transform: translateX(-80px); /* 👈 flyttar knapparna åt vänster */
 }
+
 
 .button {
   width: 100px;
   height: 60px;
-  border-radius: 50px;
-  border: none;
-  cursor: pointer;
   font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
 }
 
 .button-ja {
-  background: #ff69b4;
+  background-color: #ff69b4;
   color: white;
 }
 
 .button-nej {
-  background: #dcdcdc;
+  background-color: #dcdcdc;
   color: #333;
-  position: fixed; /* 👈 alltid fixed */
 }
 </style>
 </head>
@@ -106,35 +110,36 @@ body {
 </div>
 
 <script>
-/* === HJÄRTAN (MITTEN) === */
+/* === FALLANDE HJÄRTAN (MITTEN) === */
 const hearts = document.getElementById("hearts");
 for (let i = 0; i < 45; i++) {
   const h = document.createElement("div");
   h.className = "heart";
   h.textContent = "❤";
   h.style.left = Math.random() * 100 + "vw";
-  h.style.top = 45 + (Math.random() * 20 - 10) + "vh";
+  h.style.top = 45 + (Math.random() * 20 - 10) + "vh"; // 👈 mitten
   h.style.fontSize = 12 + Math.random() * 18 + "px";
   h.style.animationDuration = 10 + Math.random() * 10 + "s";
   h.style.animationDelay = (-Math.random() * 10) + "s";
   hearts.appendChild(h);
 }
 
-/* === NEJ-KNAPP (BOMBSÄKER) === */
+/* === NEJ-KNAPP MED RUNDADE HÖRN === */
 const btn = document.getElementById("nej");
 const dangerRadius = 150;
 const cornerRadius = 200;
 
-// 🔒 MANUELL STARTPOSITION (ALLTID SYNLIG)
-let x = window.innerWidth / 2 + 120;
-let y = window.innerHeight / 2 + 40;
+let rect = btn.getBoundingClientRect();
+let x = rect.left;
+let y = rect.top;
 
+// Gör den fixed EFTER att vi tagit startpositionen
+btn.style.position = "fixed";
 btn.style.left = x + "px";
 btn.style.top = y + "px";
 
 document.addEventListener("mousemove", (e) => {
-  const rect = btn.getBoundingClientRect();
-
+  rect = btn.getBoundingClientRect();
   const cx = rect.left + rect.width / 2;
   const cy = rect.top + rect.height / 2;
 
@@ -152,15 +157,13 @@ document.addEventListener("mousemove", (e) => {
   const maxX = window.innerWidth - rect.width;
   const maxY = window.innerHeight - rect.height;
 
-  // Rektangel
   x = Math.max(minX, Math.min(x, maxX));
   y = Math.max(minY, Math.min(y, maxY));
 
-  // Rundade hörn
   const corners = [
-    { cx: cornerRadius, cy: cornerRadius },
-    { cx: maxX - cornerRadius, cy: cornerRadius },
-    { cx: cornerRadius, cy: maxY - cornerRadius },
+    { cx: minX + cornerRadius, cy: minY + cornerRadius },
+    { cx: maxX - cornerRadius, cy: minY + cornerRadius },
+    { cx: minX + cornerRadius, cy: maxY - cornerRadius },
     { cx: maxX - cornerRadius, cy: maxY - cornerRadius }
   ];
 
@@ -169,7 +172,12 @@ document.addEventListener("mousemove", (e) => {
     const vy = y + rect.height / 2 - c.cy;
     const dist = Math.hypot(vx, vy);
 
-    if (dist > cornerRadius) {
+    const inCornerX = (x < c.cx && c.cx < window.innerWidth / 2) ||
+                      (x > c.cx && c.cx > window.innerWidth / 2);
+    const inCornerY = (y < c.cy && c.cy < window.innerHeight / 2) ||
+                      (y > c.cy && c.cy > window.innerHeight / 2);
+
+    if (dist > cornerRadius && inCornerX && inCornerY) {
       const scale = cornerRadius / dist;
       x = c.cx + vx * scale - rect.width / 2;
       y = c.cy + vy * scale - rect.height / 2;
