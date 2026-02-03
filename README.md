@@ -41,11 +41,11 @@ body {
 }
 
 .button {
-  width: 100px;
-  height: 30px;
+  width: 90px;
+  height: 70px;
   font-family: 'Noto Sans JP', sans-serif;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 15px;
   border: none;
   border-radius: 50px;
   cursor: pointer;
