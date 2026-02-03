@@ -102,7 +102,7 @@ body {
 .button-nej {
   background-color: #dcdcdc;
   color: #333;
-  position: relative;
+  position: fixed; /* 👈 ändrad från relative till fixed */
 }
 
 .button-container {
@@ -153,11 +153,16 @@ for (let i = 0; i < heartCount; i++) {
   heartsContainer.appendChild(heart);
 }
 
-/* === NEJ-KNAPPEN SOM FLYR (FIXAD + BEGRÄNSAD) === */
+/* === NEJ-KNAPPEN SOM FLYR (HELA SKÄRMEN) === */
 const nejButton = document.querySelector('.button-nej');
-let x = 0;
-let y = 0;
 const dangerRadius = 150;
+
+// Startposition (mitt på skärmen ungefär)
+let posX = window.innerWidth / 2 + 100;
+let posY = window.innerHeight / 2 + 100;
+
+nejButton.style.left = posX + 'px';
+nejButton.style.top = posY + 'px';
 
 document.addEventListener('mousemove', (e) => {
   const rect = nejButton.getBoundingClientRect();
@@ -169,18 +174,20 @@ document.addEventListener('mousemove', (e) => {
   const distance = Math.sqrt(dx * dx + dy * dy);
 
   if (distance < dangerRadius) {
-    x -= (dx / distance) * 12;
-    y -= (dy / distance) * 12;
+    posX -= (dx / distance) * 14;
+    posY -= (dy / distance) * 14;
   }
 
+  // === GRÄNSER: HELA SKÄRMEN ===
   const padding = 10;
   const maxX = window.innerWidth - rect.width - padding;
   const maxY = window.innerHeight - rect.height - padding;
 
-  x = Math.max(-rect.left + padding, Math.min(x, maxX - rect.left));
-  y = Math.max(-rect.top + padding, Math.min(y, maxY - rect.top));
+  posX = Math.max(padding, Math.min(posX, maxX));
+  posY = Math.max(padding, Math.min(posY, maxY));
 
-  nejButton.style.transform = `translate(${x}px, ${y}px)`;
+  nejButton.style.left = posX + 'px';
+  nejButton.style.top = posY + 'px';
 });
 </script>
 
