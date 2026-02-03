@@ -16,10 +16,7 @@ body {
 /* === FALLANDE HJÄRTAN === */
 .hearts {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   pointer-events: none;
   z-index: -1;
 }
@@ -27,7 +24,6 @@ body {
 .heart {
   position: absolute;
   color: #ff8fb1;
-  font-size: 20px;
   animation: fall linear infinite;
   opacity: 0.7;
 }
@@ -50,45 +46,29 @@ body {
   z-index: 1;
 }
 
-.center-box img {
-  width: 200px;
-  height: 200px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-
 .text-box {
   width: 700px;
-  padding: 10px;
   font-family: 'Noto Sans JP', sans-serif;
-  font-weight: 700;
   font-size: 40px;
-  color: #333;
   text-align: center;
 }
 
 .button {
   width: 100px;
   height: 60px;
-  font-family: 'Noto Sans JP', sans-serif;
-  font-weight: 700;
-  font-size: 15px;
-  border: none;
   border-radius: 50px;
+  border: none;
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-family: 'Noto Sans JP', sans-serif;
 }
 
 .button-ja {
-  background-color: #ff69b4;
+  background: #ff69b4;
   color: white;
 }
 
 .button-nej {
-  background-color: #dcdcdc;
-  color: #333;
+  background: #dcdcdc;
   position: fixed;
 }
 
@@ -105,7 +85,7 @@ body {
 <div class="hearts" id="hearts"></div>
 
 <div class="center-box">
-  <img src="https://thumbs.dreamstime.com/b/print-206284399.jpg">
+  <img src="https://thumbs.dreamstime.com/b/print-206284399.jpg" width="200">
   <div class="text-box">... vill du bli min valentine?</div>
   <div class="button-container">
     <button class="button button-ja">Ja</button>
@@ -115,73 +95,75 @@ body {
 
 <script>
 /* === FALLANDE HJÄRTAN === */
-const heartsContainer = document.getElementById('hearts');
-const heartCount = 45;
-
-for (let i = 0; i < heartCount; i++) {
-  const heart = document.createElement('div');
-  heart.classList.add('heart');
-  heart.innerHTML = '❤';
-
-  heart.style.left = Math.random() * 100 + 'vw';
-  heart.style.top = Math.random() * 40 + 'vh';
-  heart.style.fontSize = Math.random() * 18 + 12 + 'px';
-
-  const duration = Math.random() * 6 + 12;
-  heart.style.animationDuration = duration + 's';
-  heart.style.animationDelay = (-Math.random() * duration) + 's';
-
-  heartsContainer.appendChild(heart);
+const hearts = document.getElementById("hearts");
+for (let i = 0; i < 40; i++) {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.textContent = "❤";
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.fontSize = 12 + Math.random() * 18 + "px";
+  h.style.animationDuration = 10 + Math.random() * 10 + "s";
+  hearts.appendChild(h);
 }
 
-/* === NEJ-KNAPPEN SOM FLYR I CIRKEL === */
-const nejButton = document.querySelector('.button-nej');
+/* === NEJ-KNAPP MED RUNDADE HÖRN === */
+const btn = document.querySelector(".button-nej");
 const dangerRadius = 150;
+const cornerRadius = 120; // 👈 hur "runda" hörnen är
 
-// Startposition
-let posX = window.innerWidth / 2 + 100;
-let posY = window.innerHeight / 2 + 100;
+let x = window.innerWidth / 2 + 100;
+let y = window.innerHeight / 2 + 100;
 
-nejButton.style.left = posX + 'px';
-nejButton.style.top = posY + 'px';
+document.addEventListener("mousemove", (e) => {
+  const r = btn.getBoundingClientRect();
+  const cx = r.left + r.width / 2;
+  const cy = r.top + r.height / 2;
 
-document.addEventListener('mousemove', (e) => {
-  const rect = nejButton.getBoundingClientRect();
+  const dx = e.clientX - cx;
+  const dy = e.clientY - cy;
+  const d = Math.hypot(dx, dy);
 
-  const btnCenterX = rect.left + rect.width / 2;
-  const btnCenterY = rect.top + rect.height / 2;
-
-  const dx = e.clientX - btnCenterX;
-  const dy = e.clientY - btnCenterY;
-  const distance = Math.sqrt(dx * dx + dy * dy);
-
-  // Fly undan musen
-  if (distance < dangerRadius) {
-    posX -= (dx / distance) * 14;
-    posY -= (dy / distance) * 14;
+  if (d < dangerRadius) {
+    x -= (dx / d) * 14;
+    y -= (dy / d) * 14;
   }
 
-  /* === CIRKULÄR BEGRÄNSNING === */
-  const screenCenterX = window.innerWidth / 2;
-  const screenCenterY = window.innerHeight / 2;
+  const minX = 0;
+  const minY = 0;
+  const maxX = window.innerWidth - r.width;
+  const maxY = window.innerHeight - r.height;
 
-  const radius =
-    Math.min(window.innerWidth, window.innerHeight) / 2
-    - Math.max(rect.width, rect.height)
-    - 20;
+  // Clamp först (rektangel)
+  x = Math.max(minX, Math.min(x, maxX));
+  y = Math.max(minY, Math.min(y, maxY));
 
-  const vx = posX + rect.width / 2 - screenCenterX;
-  const vy = posY + rect.height / 2 - screenCenterY;
-  const distFromCenter = Math.sqrt(vx * vx + vy * vy);
+  // Rundade hörn
+  const corners = [
+    { cx: minX + cornerRadius, cy: minY + cornerRadius },
+    { cx: maxX - cornerRadius, cy: minY + cornerRadius },
+    { cx: minX + cornerRadius, cy: maxY - cornerRadius },
+    { cx: maxX - cornerRadius, cy: maxY - cornerRadius }
+  ];
 
-  if (distFromCenter > radius) {
-    const scale = radius / distFromCenter;
-    posX = screenCenterX + vx * scale - rect.width / 2;
-    posY = screenCenterY + vy * scale - rect.height / 2;
+  for (const c of corners) {
+    const vx = x + r.width / 2 - c.cx;
+    const vy = y + r.height / 2 - c.cy;
+    const dist = Math.hypot(vx, vy);
+
+    if (dist > cornerRadius &&
+        ((c.cx < window.innerWidth / 2 && x < c.cx) ||
+         (c.cx > window.innerWidth / 2 && x > c.cx)) &&
+        ((c.cy < window.innerHeight / 2 && y < c.cy) ||
+         (c.cy > window.innerHeight / 2 && y > c.cy))) {
+
+      const scale = cornerRadius / dist;
+      x = c.cx + vx * scale - r.width / 2;
+      y = c.cy + vy * scale - r.height / 2;
+    }
   }
 
-  nejButton.style.left = posX + 'px';
-  nejButton.style.top = posY + 'px';
+  btn.style.left = x + "px";
+  btn.style.top = y + "px";
 });
 </script>
 
