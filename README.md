@@ -10,7 +10,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* VIKTIGT */
 }
 
 .center-box {
@@ -42,7 +41,7 @@ body {
 }
 
 .button {
-  width: 100px;
+  width: 10px;
   height: 60px;
   font-family: 'Noto Sans JP', sans-serif;
   font-weight: 700;
@@ -69,7 +68,7 @@ body {
 .button-container {
   display: flex;
   gap: 180px;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 </style>
 </head>
@@ -96,7 +95,6 @@ const dangerRadius = 150;
 
 document.addEventListener('mousemove', (e) => {
   const rect = nejButton.getBoundingClientRect();
-  const bodyRect = document.body.getBoundingClientRect();
 
   const cx = rect.left + rect.width / 2;
   const cy = rect.top + rect.height / 2;
@@ -114,16 +112,14 @@ document.addEventListener('mousemove', (e) => {
     y -= ny * 14;
   }
 
-  // === LÅS INOM ROSA BAKGRUNDEN (BODY) ===
-  const padding = 10;
+  // === WRAP AROUND SKÄRMEN ===
+  const screenW = window.innerWidth;
+  const screenH = window.innerHeight;
 
-  const minX = bodyRect.left - rect.left + padding;
-  const maxX = bodyRect.right - rect.right - padding;
-  const minY = bodyRect.top - rect.top + padding;
-  const maxY = bodyRect.bottom - rect.bottom - padding;
-
-  x = Math.max(minX, Math.min(x, maxX));
-  y = Math.max(minY, Math.min(y, maxY));
+  if (rect.right < 0) x += screenW + rect.width;
+  if (rect.left > screenW) x -= screenW + rect.width;
+  if (rect.bottom < 0) y += screenH + rect.height;
+  if (rect.top > screenH) y -= screenH + rect.height;
 
   nejButton.style.transform = `translate(${x}px, ${y}px)`;
 });
