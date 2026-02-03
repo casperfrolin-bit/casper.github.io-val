@@ -68,7 +68,7 @@ body {
 .button-container {
   display: flex;
   gap: 180px;
-  margin-top: 20px;
+  margin-top: 40px;
 }
 </style>
 </head>
