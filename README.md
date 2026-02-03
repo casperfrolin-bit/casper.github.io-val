@@ -143,33 +143,33 @@ body {
 <script>
 /* === FALLANDE HJÄRTAN SCRIPT === */
 const heartsContainer = document.getElementById('hearts');
-const heartCount = 40;
+const heartCount = 45; // 👈 lite fler totalt
 
 for (let i = 0; i < heartCount; i++) {
   const heart = document.createElement('div');
   heart.classList.add('heart');
   heart.innerHTML = '❤';
 
-  // X-position: helt slumpad
+  // X: helt slumpad
   heart.style.left = Math.random() * 100 + 'vw';
 
-  // Y-position: flest i mitten, några få uppe
-  if (Math.random() < 0.7) {
-    // 70% runt mitten
+  // Y: mitten behålls perfekt, fler uppe
+  if (Math.random() < 0.6) {
+    // 60% runt mitten (samma som innan)
     heart.style.top = 45 + (Math.random() * 20 - 10) + 'vh';
   } else {
-    // 30% högre upp
-    heart.style.top = Math.random() * 20 + 'vh';
+    // 40% högre upp (lite fler än innan)
+    heart.style.top = Math.random() * 30 + 'vh';
   }
 
   heart.style.fontSize = Math.random() * 18 + 12 + 'px';
 
-  // Långsammare fall
-  const duration = Math.random() * 8 + 14; // 14–22 sek
+  // Snabbare in (men fortfarande mjukt)
+  const duration = Math.random() * 6 + 12; // 12–18 sek
   heart.style.animationDuration = duration + 's';
 
-  // Starta mitt i animationen
-  heart.style.animationDelay = (-Math.random() * duration) + 's';
+  // Startar nästan direkt "i rörelse"
+  heart.style.animationDelay = (-Math.random() * duration * 0.8) + 's';
 
   heartsContainer.appendChild(heart);
 }
