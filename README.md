@@ -112,14 +112,13 @@ document.addEventListener('mousemove', (e) => {
     y -= ny * 14;
   }
 
-  // === WRAP AROUND SKÄRMEN ===
-  const screenW = window.innerWidth;
-  const screenH = window.innerHeight;
+  // === HÅLL KNAPPEN INOM SKÄRMEN ===
+  const padding = 10;
+  const maxX = window.innerWidth - rect.width - padding;
+  const maxY = window.innerHeight - rect.height - padding;
 
-  if (rect.right < 0) x += screenW + rect.width;
-  if (rect.left > screenW) x -= screenW + rect.width;
-  if (rect.bottom < 0) y += screenH + rect.height;
-  if (rect.top > screenH) y -= screenH + rect.height;
+  x = Math.max(-rect.left + padding, Math.min(x, maxX - rect.left));
+  y = Math.max(-rect.top + padding, Math.min(y, maxY - rect.top));
 
   nejButton.style.transform = `translate(${x}px, ${y}px)`;
 });
@@ -127,4 +126,3 @@ document.addEventListener('mousemove', (e) => {
 
 </body>
 </html>
-
