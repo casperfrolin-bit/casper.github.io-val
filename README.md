@@ -73,7 +73,7 @@ body {
 .button-nej {
   background: #dcdcdc;
   position: absolute;
-  pointer-events: none; /* 🔒 omöjlig att klicka */
+  pointer-events: none; /* omöjlig att klicka */
 }
 
 .button-container {
@@ -151,7 +151,7 @@ function spawnHeart() {
 for (let i = 0; i < 30; i++) spawnHeart();
 setInterval(spawnHeart, 200);
 
-/* === NEJ-KNAPP: MUS-SPEGEL === */
+/* === NEJ-KNAPP: RÖR SIG BARA NÄR MUSEN ÄR NÄRA === */
 const btn = document.getElementById("nejBtn");
 const jaBtn = document.getElementById("jaBtn");
 
@@ -161,6 +161,7 @@ let y = 0;
 let lastMouseX = null;
 let lastMouseY = null;
 
+const activationRadius = 180;   // 🔥 hur nära musen måste vara
 const padding = 20;
 const cornerRadius = 180;
 
@@ -168,13 +169,28 @@ btn.style.left = x + "px";
 btn.style.top = y + "px";
 
 document.addEventListener("mousemove", e => {
+  const r = btn.getBoundingClientRect();
+  const cx = r.left + r.width / 2;
+  const cy = r.top + r.height / 2;
+
+  const dxMouse = e.clientX - cx;
+  const dyMouse = e.clientY - cy;
+  const distance = Math.hypot(dxMouse, dyMouse);
+
+  // Om musen är för långt bort → frys
+  if (distance > activationRadius) {
+    lastMouseX = e.clientX;
+    lastMouseY = e.clientY;
+    return;
+  }
+
   if (lastMouseX === null) {
     lastMouseX = e.clientX;
     lastMouseY = e.clientY;
     return;
   }
 
-  /* 🔥 exakt samma rörelse som musen */
+  // 🔥 exakt samma rörelse som musen
   const dx = e.clientX - lastMouseX;
   const dy = e.clientY - lastMouseY;
 
