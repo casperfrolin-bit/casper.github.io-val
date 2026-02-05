@@ -13,9 +13,9 @@ body {
   align-items: center;
 }
 
-/* ====== ÄNDRA MELLANRUMMET HÄR ====== */
+/* Avstånd mellan knappar */
 :root {
-  --btn-gap: 10px;   /* ändra denna siffra */
+  --btn-gap: 50px;  /* större avstånd */
 }
 
 /* === FALLANDE HJÄRTAN === */
@@ -49,6 +49,7 @@ body {
   align-items: center;
   padding-top: 20px;
   z-index: 1;
+  position: relative;
 }
 
 /* === TEXT === */
@@ -61,7 +62,7 @@ body {
 
 /* === KNAPPAR === */
 .button {
-  width: 100px;
+  width: 120px;
   height: 60px;
   border-radius: 50px;
   border: none;
@@ -83,7 +84,7 @@ body {
   background: #dcdcdc;
 }
 
-/* layout så de står bredvid varandra */
+/* Knappcontainer centreras och har större avstånd */
 .button-container {
   position: relative;
   display: flex;
@@ -91,39 +92,18 @@ body {
   justify-content: center;
   gap: var(--btn-gap);
   margin-top: 20px;
+  width: 100%;
 }
 
-/* ===== MODAL-RUTA ===== */
-.modal-bg {
+/* Rundade kanter för Nej-knappens område */
+.screen-boundary {
   position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.modal-box {
-  background: #111;
-  color: white;
-  padding: 20px 30px;
-  border-radius: 18px;
-  font-family: 'Noto Sans JP', sans-serif;
-  min-width: 280px;
-  text-align: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,.4);
-}
-
-.modal-btn {
-  margin-top: 12px;
-  padding: 6px 14px;
-  border-radius: 16px;
-  border: none;
-  background: #e6f0ff;
-  color: #1b5fd1;
-  cursor: pointer;
-  font-weight: bold;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 40px; /* rundade hörn */
+  pointer-events: none;
 }
 </style>
 </head>
@@ -131,6 +111,7 @@ body {
 <body>
 
 <div class="hearts" id="hearts"></div>
+<div class="screen-boundary"></div>
 
 <div class="center-box">
   <img src="https://thumbs.dreamstime.com/b/print-206284399.jpg" width="200">
@@ -175,10 +156,11 @@ const jaBtn = document.getElementById("jaBtn");
 
 const dangerRadius = 180;
 const pushStep = 18;
-const cornerRadius = 220;
-const screenPadding = 15;
+const cornerRadius = 40; // rundade hörn
 
-// Startposition: bredvid Ja-knappen
+// Startposition: centrera under texten
+const container = document.querySelector(".button-container");
+const containerRect = container.getBoundingClientRect();
 let x = jaBtn.offsetWidth + parseInt(getComputedStyle(document.documentElement).getPropertyValue('--btn-gap'));
 let y = 0;
 
@@ -197,41 +179,17 @@ document.addEventListener("mousemove", (e) => {
   const d = Math.hypot(dx, dy);
 
   if (d < dangerRadius) {
-    // Flytta Nej-knappen
     x -= (dx / d) * pushStep;
     y -= (dy / d) * pushStep;
 
-    // Begränsa inom skärmen
-    const minX = screenPadding;
-    const minY = screenPadding;
-    const maxX = window.innerWidth - r.width - screenPadding;
-    const maxY = window.innerHeight - r.height - screenPadding;
+    // Begränsa inom skärmen med rundade hörn
+    const minX = cornerRadius;
+    const minY = cornerRadius;
+    const maxX = window.innerWidth - r.width - cornerRadius;
+    const maxY = window.innerHeight - r.height - cornerRadius;
 
     x = Math.max(minX, Math.min(x, maxX));
     y = Math.max(minY, Math.min(y, maxY));
-
-    // Hörnbegränsning
-    const corners = [
-      { cx: minX + cornerRadius, cy: minY + cornerRadius },
-      { cx: maxX - cornerRadius, cy: minY + cornerRadius },
-      { cx: minX + cornerRadius, cy: maxY - cornerRadius },
-      { cx: maxX - cornerRadius, cy: maxY - cornerRadius }
-    ];
-
-    const bx = x + r.width / 2;
-    const by = y + r.height / 2;
-
-    for (const c of corners) {
-      const vx = bx - c.cx;
-      const vy = by - c.cy;
-      const dist = Math.hypot(vx, vy);
-
-      if (dist < cornerRadius) {
-        const scale = cornerRadius / (dist || 0.1);
-        x = c.cx + vx * scale - r.width / 2;
-        y = c.cy + vy * scale - r.height / 2;
-      }
-    }
 
     btn.style.left = x + 'px';
     btn.style.top = y + 'px';
