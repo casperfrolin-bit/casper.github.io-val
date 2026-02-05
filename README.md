@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html>
+
+<html lang="sv">
 <head>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap" rel="stylesheet">
 
@@ -14,31 +14,27 @@ body {
   align-items: center;
 }
 
-:root {
-  --btn-gap: 10px;
-}
+:root { --btn-gap: 10px; }
 
-/* === FALLANDE HJÄRTAN === */
+/* === HJÄRTAN === */
 .hearts {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: -1;
 }
-
 .heart {
   position: absolute;
   color: #ff8fb1;
   animation: fall linear forwards;
   opacity: 0.7;
 }
-
 @keyframes fall {
   0% { transform: translateY(-10vh); }
   100% { transform: translateY(110vh); }
 }
 
-/* === CENTER BOX === */
+/* === BOX === */
 .center-box {
   width: 900px;
   min-height: 550px;
@@ -51,7 +47,6 @@ body {
   z-index: 1;
 }
 
-/* === TEXT === */
 .text-box {
   width: 700px;
   font-family: 'Noto Sans JP', sans-serif;
@@ -73,24 +68,21 @@ body {
   background: #ff69b4;
   color: white;
 }
-
-.button-ja:hover {
-  transform: scale(1.12);
-}
+.button-ja:hover { transform: scale(1.12); }
 
 .button-nej {
   background: #dcdcdc;
   position: absolute;
+  pointer-events: none; /* 🔒 omöjlig att klicka */
 }
 
-/* === KNAPP LAYOUT === */
 .button-container {
   position: relative;
   margin-top: 20px;
   height: 80px;
 }
 
-/* ===== MODAL ===== */
+/* === MODAL === */
 .modal-bg {
   position: fixed;
   inset: 0;
@@ -100,7 +92,6 @@ body {
   align-items: center;
   z-index: 9999;
 }
-
 .modal-box {
   background: #111;
   color: white;
@@ -110,7 +101,6 @@ body {
   min-width: 280px;
   text-align: center;
 }
-
 .modal-btn {
   margin-top: 12px;
   padding: 6px 14px;
@@ -161,56 +151,56 @@ function spawnHeart() {
 for (let i = 0; i < 30; i++) spawnHeart();
 setInterval(spawnHeart, 200);
 
-/* === NEJ-KNAPP: FLYTANDE & MJUK === */
+/* === NEJ-KNAPP: MUS-SPEGEL === */
 const btn = document.getElementById("nejBtn");
 const jaBtn = document.getElementById("jaBtn");
 
 let x = jaBtn.offsetWidth + 20;
 let y = 0;
 
-let vx = 1.2;
-let vy = 1.0;
+let lastMouseX = null;
+let lastMouseY = null;
 
-const mouseForce = 0.06;
-const drift = 0.02;
 const padding = 20;
-const cornerRadius = 160;
+const cornerRadius = 180;
 
 btn.style.left = x + "px";
 btn.style.top = y + "px";
 
 document.addEventListener("mousemove", e => {
-  const r = btn.getBoundingClientRect();
-  const cx = r.left + r.width / 2;
-  const cy = r.top + r.height / 2;
+  if (lastMouseX === null) {
+    lastMouseX = e.clientX;
+    lastMouseY = e.clientY;
+    return;
+  }
 
-  const dx = cx - e.clientX;
-  const dy = cy - e.clientY;
-  const dist = Math.hypot(dx, dy) || 1;
+  /* 🔥 exakt samma rörelse som musen */
+  const dx = e.clientX - lastMouseX;
+  const dy = e.clientY - lastMouseY;
 
-  vx += (dx / dist) * mouseForce;
-  vy += (dy / dist) * mouseForce;
+  x += dx;
+  y += dy;
+
+  lastMouseX = e.clientX;
+  lastMouseY = e.clientY;
+
+  clampRounded();
+  btn.style.left = x + "px";
+  btn.style.top = y + "px";
 });
 
-/* === ANIMATION LOOP === */
-function animate() {
+/* === ROUNDED BOUNDS === */
+function clampRounded() {
   const r = btn.getBoundingClientRect();
-
-  x += vx;
-  y += vy;
-
-  vx += (Math.random() - 0.5) * drift;
-  vy += (Math.random() - 0.5) * drift;
 
   const minX = padding;
   const minY = padding;
   const maxX = window.innerWidth - r.width - padding;
   const maxY = window.innerHeight - r.height - padding;
 
-  if (x < minX || x > maxX) vx *= -1;
-  if (y < minY || y > maxY) vy *= -1;
+  x = Math.max(minX, Math.min(x, maxX));
+  y = Math.max(minY, Math.min(y, maxY));
 
-  /* ROUNDED CORNERS */
   const corners = [
     [minX + cornerRadius, minY + cornerRadius],
     [maxX - cornerRadius, minY + cornerRadius],
@@ -222,25 +212,16 @@ function animate() {
   const by = y + r.height / 2;
 
   for (const [cx, cy] of corners) {
-    const dx = bx - cx;
-    const dy = by - cy;
-    const dist = Math.hypot(dx, dy);
+    const vx = bx - cx;
+    const vy = by - cy;
+    const dist = Math.hypot(vx, vy);
     if (dist < cornerRadius) {
       const s = cornerRadius / (dist || 0.001);
-      x = cx + dx * s - r.width / 2;
-      y = cy + dy * s - r.height / 2;
-      vx *= -0.9;
-      vy *= -0.9;
+      x = cx + vx * s - r.width / 2;
+      y = cy + vy * s - r.height / 2;
     }
   }
-
-  btn.style.left = x + "px";
-  btn.style.top = y + "px";
-
-  requestAnimationFrame(animate);
 }
-
-animate();
 
 /* === MODAL === */
 const modal = document.getElementById("modal");
