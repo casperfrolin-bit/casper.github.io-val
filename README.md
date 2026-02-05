@@ -15,9 +15,8 @@ body {
 
 /* ====== ÄNDRA MELLANRUMMET HÄR ====== */
 :root {
-  --btn-gap: 10px;   /* ←←← ändra denna siffra */
+  --btn-gap: 10px;   /* ändra denna siffra */
 }
-/* ===================================== */
 
 /* === FALLANDE HJÄRTAN === */
 .hearts {
@@ -94,7 +93,7 @@ body {
   margin-top: 20px;
 }
 
-/* ===== MODAL-RUTA (som din bild) ===== */
+/* ===== MODAL-RUTA ===== */
 .modal-bg {
   position: fixed;
   inset: 0;
@@ -179,16 +178,15 @@ const pushStep = 18;
 const cornerRadius = 220;
 const screenPadding = 15;
 
-// Startposition på mitten under texten
-const container = document.querySelector(".button-container");
-const containerRect = container.getBoundingClientRect();
-let x = 0;
+// Startposition: bredvid Ja-knappen
+let x = jaBtn.offsetWidth + parseInt(getComputedStyle(document.documentElement).getPropertyValue('--btn-gap'));
 let y = 0;
 
 btn.style.position = 'absolute';
-btn.style.left = jaBtn.offsetWidth + parseInt(getComputedStyle(document.documentElement).getPropertyValue('--btn-gap')) + 'px';
-btn.style.top = '0px';
+btn.style.left = x + 'px';
+btn.style.top = y + 'px';
 
+// Flytta knappen bara när musen kommer nära
 document.addEventListener("mousemove", (e) => {
   const r = btn.getBoundingClientRect();
   const cx = r.left + r.width / 2;
@@ -199,43 +197,45 @@ document.addEventListener("mousemove", (e) => {
   const d = Math.hypot(dx, dy);
 
   if (d < dangerRadius) {
+    // Flytta Nej-knappen
     x -= (dx / d) * pushStep;
     y -= (dy / d) * pushStep;
-  }
 
-  const minX = screenPadding;
-  const minY = screenPadding;
-  const maxX = window.innerWidth - r.width - screenPadding;
-  const maxY = window.innerHeight - r.height - screenPadding;
+    // Begränsa inom skärmen
+    const minX = screenPadding;
+    const minY = screenPadding;
+    const maxX = window.innerWidth - r.width - screenPadding;
+    const maxY = window.innerHeight - r.height - screenPadding;
 
-  x = Math.max(minX, Math.min(x, maxX));
-  y = Math.max(minY, Math.min(y, maxY));
+    x = Math.max(minX, Math.min(x, maxX));
+    y = Math.max(minY, Math.min(y, maxY));
 
-  // Hörnbegränsning
-  const corners = [
-    { cx: minX + cornerRadius, cy: minY + cornerRadius },
-    { cx: maxX - cornerRadius, cy: minY + cornerRadius },
-    { cx: minX + cornerRadius, cy: maxY - cornerRadius },
-    { cx: maxX - cornerRadius, cy: maxY - cornerRadius }
-  ];
+    // Hörnbegränsning
+    const corners = [
+      { cx: minX + cornerRadius, cy: minY + cornerRadius },
+      { cx: maxX - cornerRadius, cy: minY + cornerRadius },
+      { cx: minX + cornerRadius, cy: maxY - cornerRadius },
+      { cx: maxX - cornerRadius, cy: maxY - cornerRadius }
+    ];
 
-  const bx = x + r.width / 2;
-  const by = y + r.height / 2;
+    const bx = x + r.width / 2;
+    const by = y + r.height / 2;
 
-  for (const c of corners) {
-    const vx = bx - c.cx;
-    const vy = by - c.cy;
-    const dist = Math.hypot(vx, vy);
+    for (const c of corners) {
+      const vx = bx - c.cx;
+      const vy = by - c.cy;
+      const dist = Math.hypot(vx, vy);
 
-    if (dist < cornerRadius) {
-      const scale = cornerRadius / (dist || 0.1);
-      x = c.cx + vx * scale - r.width / 2;
-      y = c.cy + vy * scale - r.height / 2;
+      if (dist < cornerRadius) {
+        const scale = cornerRadius / (dist || 0.1);
+        x = c.cx + vx * scale - r.width / 2;
+        y = c.cy + vy * scale - r.height / 2;
+      }
     }
-  }
 
-  btn.style.left = x + 'px';
-  btn.style.top = y + 'px';
+    btn.style.left = x + 'px';
+    btn.style.top = y + 'px';
+  }
 });
 
 /* ===== MODAL NÄR MAN TRYCKER JA ===== */
